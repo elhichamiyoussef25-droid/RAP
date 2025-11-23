@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Instagram Grid Cutter | قصاص إنستغرام</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #405DE6;
+      --secondary: #5851DB;
+      --accent: #E1306C;
+      --purple: #833AB4;
+      --orange: #FCAF45;
+      --light: #F8F9FA;
+      --dark: #262626;
+      --gray: #8E8E8E;
+      --success: #4CAF50;
+      --support: #FF6B6B;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+      --bg-color: #ffffff;
+      --text-color: #262626;
+      --card-bg: #ffffff;
+    }
+
+    [data-theme="dark"] {
+      --bg-color: #121212;
+      --text-color: #f5f5f5;
+      --card-bg: #1e1e1e;
+      --light: #2d2d2d;
+      --gray: #a0a0a0;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Segoe UI', 'Tajawal', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: var(--transition);
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    /* شريط الأدوات العلوي */
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding: 15px 20px;
+      background: var(--card-bg);
+      border-radius: 15px;
+      box-shadow: var(--shadow);
+    }
+    
+    .theme-toggle, .language-toggle {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-color);
+      transition: var(--transition);
+      padding: 8px;
+      border-radius: 50%;
+    }
+    
+    .theme-toggle:hover, .language-toggle:hover {
+      background: var(--light);
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 15px;
+    }
+    
+    .social-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 15px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: var(--transition);
+      box-shadow: 0 4px 15px rgba(64, 93, 230, 0.3);
+    }
+    
+    .social-link:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 7px 20px rgba(64, 93, 230, 0.4);
+    }
+    
+    .social-link.instagram {
+      background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D, #F56040, #F77737, #FCAF45, #FFDC80);
+    }
+    
+    /* زر الدعم المميز */
+    .support-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      background: linear-gradient(45deg, var(--support), #FF8E8E);
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 700;
+      transition: var(--transition);
+      box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+      animation: pulse 2s infinite;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .support-btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 7px 20px rgba(255, 107, 107, 0.6);
+    }
+    
+    .support-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: 0.5s;
+    }
+    
+    .support-btn:hover::before {
+      left: 100%;
+    }
+    
+    .support-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #FFD700;
+      color: #333;
+      font-size: 0.7rem;
+      font-weight: bold;
+      padding: 3px 8px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding: 20px;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+    
+    .logo-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(45deg, var(--primary), var(--accent), var(--orange));
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 24px;
+      box-shadow: var(--shadow);
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      background: linear-gradient(to right, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      font-size: 1.1rem;
+      color: var(--gray);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .card {
+      background-color: var(--card-bg);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      margin-bottom: 30px;
+      transition: var(--transition);
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+    
+    .card-header {
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    
+    .card-body {
+      padding: 30px;
+    }
+    
+    .upload-area {
+      border: 3px dashed var(--gray);
+      border-radius: 15px;
+      padding: 40px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-bottom: 25px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .upload-area:hover {
+      border-color: var(--primary);
+      background-color: rgba(64, 93, 230, 0.03);
+    }
+    
+    .upload-area.active {
+      border-color: var(--accent);
+      background-color: rgba(225, 48, 108, 0.05);
+    }
+    
+    .upload-icon {
+      font-size: 60px;
+      color: var(--primary);
+      margin-bottom: 15px;
+    }
+    
+    .upload-text {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    
+    .upload-subtext {
+      color: var(--gray);
+      margin-bottom: 20px;
+    }
+    
+    #imageUpload {
+      display: none;
+    }
+    
+    .upload-btn {
+      display: inline-block;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      color: white;
+      padding: 12px 25px;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 4px 15px rgba(64, 93, 230, 0.3);
+    }
+    
+    .upload-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 7px 20px rgba(64, 93, 230, 0.4);
+    }
+    
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      margin: 25px 0;
+    }
+    
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .control-label {
+      font-weight: 600;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .control-input {
+      width: 120px;
+      padding: 12px 15px;
+      border: 2px solid var(--gray);
+      border-radius: 12px;
+      font-size: 1.1rem;
+      text-align: center;
+      transition: var(--transition);
+      background-color: var(--light);
+      color: var(--text-color);
+    }
+    
+    .control-input:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(64, 93, 230, 0.2);
+    }
+    
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin: 30px 0;
+    }
+    
+    .btn {
+      padding: 15px 30px;
+      border: none;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn-primary {
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(64, 93, 230, 0.4);
+    }
+    
+    .btn-success {
+      background: linear-gradient(to right, var(--success), #66BB6A);
+      color: white;
+    }
+    
+    .btn-success:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(76, 175, 80, 0.4);
+    }
+    
+    .preview-section {
+      margin-top: 40px;
+    }
+    
+    .section-title {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      text-align: center;
+      color: var(--text-color);
+      position: relative;
+      display: inline-block;
+      left: 50%;
+      transform: translateX(-50%);
+      padding-bottom: 10px;
+    }
+    
+    .section-title:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(to right, var(--primary), var(--accent));
+      border-radius: 2px;
+    }
+    
+    .grid-preview {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+      padding: 25px;
+      background-color: var(--light);
+      border-radius: 15px;
+      min-height: 200px;
+      transition: var(--transition);
+    }
+    
+    .grid-preview.empty {
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    
+    .grid-preview img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: var(--transition);
+      cursor: pointer;
+    }
+    
+    .grid-preview img:hover {
+      transform: scale(1.08);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .empty-state {
+      text-align: center;
+      color: var(--gray);
+      padding: 20px;
+    }
+    
+    .empty-icon {
+      font-size: 70px;
+      margin-bottom: 20px;
+      opacity: 0.7;
+    }
+    
+    .empty-text {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+    
+    .empty-subtext {
+      font-size: 1rem;
+    }
+    
+    .image-info {
+      background: linear-gradient(to right, var(--purple), var(--accent));
+      color: white;
+      padding: 15px;
+      border-radius: 12px;
+      margin-top: 20px;
+      display: none;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(131, 58, 180, 0.3);
+    }
+    
+    .loading {
+      display: none;
+      text-align: center;
+      margin: 20px 0;
+    }
+    
+    .spinner {
+      border: 5px solid rgba(0, 0, 0, 0.1);
+      border-left-color: var(--primary);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .success-message {
+      background: linear-gradient(to right, var(--success), #66BB6A);
+      color: white;
+      padding: 15px;
+      border-radius: 12px;
+      margin-top: 20px;
+      text-align: center;
+      display: none;
+      box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+    }
+    
+    footer {
+      text-align: center;
+      padding: 30px 0;
+      color: var(--gray);
+      font-size: 0.9rem;
+      margin-top: 20px;
+      width: 100%;
+    }
+    
+    .social-links-footer {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 15px;
+    }
+    
+    .social-link-footer {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(to right, var(--primary), var(--accent));
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    
+    .social-link-footer:hover {
+      transform: translateY(-5px);
+    }
+    
+    canvas {
+      display: none;
+    }
+    
+    @media (max-width: 768px) {
+      .controls {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+      }
+      
+      .buttons {
+        flex-direction: column;
+        width: 100%;
+      }
+      
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .grid-preview img {
+        width: 100px;
+        height: 100px;
+      }
+      
+      .toolbar {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .social-links {
+        flex-direction: column;
+        width: 100%;
+      }
+      
+      .social-link, .support-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .card-body {
+        padding: 20px;
+      }
+      
+      .upload-area {
+        padding: 30px 15px;
+      }
+      
+      .grid-preview {
+        padding: 15px;
+      }
+      
+      .grid-preview img {
+        width: 80px;
+        height: 80px;
+      }
+    }
+    
+    /* تأثيرات إضافية */
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.5s ease-in;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* نظام إدارة اللغات المحسن */
+    .lang-ar {
+      display: block;
+    }
+    
+    .lang-en {
+      display: none;
+    }
+    
+    body[data-lang="ar"] .lang-ar {
+      display: block;
+    }
+    
+    body[data-lang="ar"] .lang-en {
+      display: none;
+    }
+    
+    body[data-lang="en"] .lang-ar {
+      display: none;
+    }
+    
+    body[data-lang="en"] .lang-en {
+      display: block;
+    }
+    
+    body[data-lang="en"] {
+      direction: ltr;
+    }
+    
+    body[data-lang="ar"] {
+      direction: rtl;
+    }
+  </style>
+</head>
+<body data-lang="ar">
+  <div class="container">
+    <!-- شريط الأدوات العلوي -->
+    <div class="toolbar">
+      <div class="toolbar-left">
+        <button class="theme-toggle" id="themeToggle" title="تبديل الوضع">
+          <i class="fas fa-moon"></i>
+        </button>
+        <button class="language-toggle" id="languageToggle" title="تبديل اللغة">
+          <i class="fas fa-language"></i>
+        </button>
+      </div>
+      <div class="social-links">
+        <a href="https://instagram.com/khalik_b3ud" class="social-link instagram" target="_blank">
+          <i class="fab fa-instagram"></i>
+          <span class="lang-ar">@khalik_b3ud</span>
+          <span class="lang-en">@khalik_b3ud</span>
+        </a>
+        <a href="https://instagram.com/wmcskai" class="social-link instagram" target="_blank">
+          <i class="fab fa-instagram"></i>
+          <span class="lang-ar">@wmcskai</span>
+          <span class="lang-en">@wmcskai</span>
+        </a>
+        <!-- زر الدعم المميز -->
+        <a href="https://www.revenuecpmgate.com/vv981umys?key=358dc99f33bd766b6ce1e963bb6aedda" class="support-btn" target="_blank">
+          <i class="fas fa-heart"></i>
+          <span class="lang-ar">ادعمنا</span>
+          <span class="lang-en">Support Us</span>
+          <div class="support-badge lang-ar">مميز</div>
+          <div class="support-badge lang-en">Premium</div>
+        </a>
+      </div>
+    </div>
+    
+    <header>
+      <div class="logo">
+        <div class="logo-icon">
+          <i class="fas fa-crop-alt"></i>
+        </div>
+        <h1 class="lang-ar">قصّاص إنستغرام</h1>
+        <h1 class="lang-en">Instagram Grid Cutter</h1>
+      </div>
+      <p class="subtitle lang-ar">حوّل صورتك إلى شبكة رائعة لتناسب صفحة إنستغرام الخاصة بك</p>
+      <p class="subtitle lang-en">Transform your image into a stunning grid for your Instagram profile</p>
+    </header>
+    
+    <div class="card fade-in">
+      <div class="card-header">
+        <i class="fas fa-upload"></i> 
+        <span class="lang-ar">رفع الصورة</span>
+        <span class="lang-en">Upload Image</span>
+      </div>
+      <div class="card-body">
+        <div class="upload-area" id="uploadArea">
+          <div class="upload-icon">
+            <i class="fas fa-cloud-upload-alt"></i>
+          </div>
+          <div class="upload-text lang-ar">اسحب وأفلت صورتك هنا</div>
+          <div class="upload-text lang-en">Drag & drop your image here</div>
+          <div class="upload-subtext lang-ar">أو انقر لاختيار صورة من جهازك</div>
+          <div class="upload-subtext lang-en">Or click to select an image from your device</div>
+          <div class="upload-btn">
+            <i class="fas fa-folder-open"></i> 
+            <span class="lang-ar">اختر صورة</span>
+            <span class="lang-en">Choose Image</span>
+          </div>
+          <input type="file" id="imageUpload" accept="image/*">
+        </div>
+        
+        <div class="image-info" id="imageInfo">
+          <i class="fas fa-info-circle"></i> <span id="infoText"></span>
+        </div>
+        
+        <div class="controls">
+          <div class="control-group">
+            <div class="control-label">
+              <i class="fas fa-grip-lines"></i> 
+              <span class="lang-ar">عدد الصفوف</span>
+              <span class="lang-en">Rows</span>
+            </div>
+            <input type="number" id="rows" class="control-input" value="3" min="1" max="10">
+          </div>
+          
+          <div class="control-group">
+            <div class="control-label">
+              <i class="fas fa-grip-lines-vertical"></i> 
+              <span class="lang-ar">عدد الأعمدة</span>
+              <span class="lang-en">Columns</span>
+            </div>
+            <input type="number" id="cols" class="control-input" value="3" min="1" max="10">
+          </div>
+        </div>
+        
+        <div class="buttons">
+          <button class="btn btn-primary" onclick="splitImage()">
+            <i class="fas fa-cut"></i> 
+            <span class="lang-ar">قص الصورة</span>
+            <span class="lang-en">Split Image</span>
+          </button>
+          <button class="btn btn-success" onclick="downloadAll()">
+            <i class="fas fa-download"></i> 
+            <span class="lang-ar">تحميل الكل</span>
+            <span class="lang-en">Download All</span>
+          </button>
+        </div>
+        
+        <div class="loading" id="loading">
+          <div class="spinner"></div>
+          <p class="lang-ar">جاري معالجة الصورة...</p>
+          <p class="lang-en">Processing image...</p>
+        </div>
+        
+        <div class="success-message" id="successMessage">
+          <i class="fas fa-check-circle"></i> <span id="successText"></span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card fade-in">
+      <div class="card-header">
+        <i class="fas fa-eye"></i> 
+        <span class="lang-ar">معاينة النتيجة</span>
+        <span class="lang-en">Preview Result</span>
+      </div>
+      <div class="card-body">
+        <h3 class="section-title lang-ar">شبكة الصور بعد التقسيم</h3>
+        <h3 class="section-title lang-en">Image Grid After Splitting</h3>
+        <div class="grid-preview empty" id="preview">
+          <div class="empty-state">
+            <div class="empty-icon">
+              <i class="fas fa-th-large"></i>
+            </div>
+            <div class="empty-text lang-ar">لا توجد معاينة متاحة</div>
+            <div class="empty-text lang-en">No preview available</div>
+            <div class="empty-subtext lang-ar">سيظهر هنا معاينة للشبكة بعد قص الصورة</div>
+            <div class="empty-subtext lang-en">Grid preview will appear here after splitting the image</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <footer>
+      <p class="lang-ar">© 2023 قصّاص إنستغرام - أداة تقسيم الصور لإنشاء شبكة إنستغرام جذابة</p>
+      <p class="lang-en">© 2023 Instagram Grid Cutter - Image splitting tool for creating attractive Instagram grids</p>
+      <div class="social-links-footer">
+        <a href="https://instagram.com/khalik_b3ud" class="social-link-footer" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://instagram.com/wmcskai" class="social-link-footer" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.revenuecpmgate.com/vv981umys?key=358dc99f33bd766b6ce1e963bb6aedda" class="social-link-footer" target="_blank" style="background: linear-gradient(45deg, #FF6B6B, #FF8E8E);"><i class="fas fa-heart"></i></a>
+      </div>
+    </footer>
+  </div>
+
+  <canvas id="canvas"></canvas>
+
+  <script>
+    // العناصر والمتغيرات العامة
+    let image, canvas = document.getElementById("canvas"), ctx = canvas.getContext("2d");
+    let imagesArray = [];
+    let currentLanguage = 'ar';
+    let currentTheme = 'light';
+
+    // عناصر DOM
+    const uploadArea = document.getElementById("uploadArea");
+    const imageUpload = document.getElementById("imageUpload");
+    const imageInfo = document.getElementById("imageInfo");
+    const infoText = document.getElementById("infoText");
+    const preview = document.getElementById("preview");
+    const loading = document.getElementById("loading");
+    const successMessage = document.getElementById("successMessage");
+    const successText = document.getElementById("successText");
+    const themeToggle = document.getElementById("themeToggle");
+    const languageToggle = document.getElementById("languageToggle");
+
+    // تهيئة التطبيق
+    document.addEventListener('DOMContentLoaded', function() {
+      // تحميل التفضيلات من localStorage
+      const savedTheme = localStorage.getItem('theme');
+      const savedLanguage = localStorage.getItem('language');
+      
+      if (savedTheme) {
+        setTheme(savedTheme);
+      }
+      
+      if (savedLanguage) {
+        setLanguage(savedLanguage);
+      } else {
+        setLanguage('ar');
+      }
+      
+      // إعداد الأحداث
+      setupEventListeners();
+    });
+
+    // إعداد مستمعي الأحداث
+    function setupEventListeners() {
+      // أحداث سحب وإفلات الصور
+      uploadArea.addEventListener('click', () => imageUpload.click());
+      
+      uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.classList.add('active');
+      });
+      
+      uploadArea.addEventListener('dragleave', () => {
+        uploadArea.classList.remove('active');
+      });
+      
+      uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('active');
+        
+        if (e.dataTransfer.files.length) {
+          imageUpload.files = e.dataTransfer.files;
+          handleImageUpload();
+        }
+      });
+
+      imageUpload.addEventListener('change', handleImageUpload);
+      
+      // أحداث تبديل الوضع واللغة
+      themeToggle.addEventListener('click', toggleTheme);
+      languageToggle.addEventListener('click', toggleLanguage);
+    }
+
+    // تبديل الوضع النهاري/الليلي
+    function toggleTheme() {
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      setTheme(newTheme);
+    }
+
+    function setTheme(theme) {
+      currentTheme = theme;
+      document.body.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      
+      // تحديث أيقونة الوضع
+      const icon = themeToggle.querySelector('i');
+      if (theme === 'dark') {
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+      } else {
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
+      }
+    }
+
+    // تبديل اللغة
+    function toggleLanguage() {
+      const newLanguage = currentLanguage === 'ar' ? 'en' : 'ar';
+      setLanguage(newLanguage);
+    }
+
+    function setLanguage(language) {
+      currentLanguage = language;
+      document.body.setAttribute('data-lang', language);
+      localStorage.setItem('language', language);
+    }
+
+    // معالجة تحميل الصورة
+    function handleImageUpload() {
+      const file = imageUpload.files[0];
+      if (!file) return;
+      
+      // التحقق من نوع الملف
+      if (!file.type.match('image.*')) {
+        alert(currentLanguage === 'ar' ? 'يرجى اختيار ملف صورة فقط' : 'Please select an image file only');
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        image = new Image();
+        image.onload = () => {
+          canvas.width = image.width;
+          canvas.height = image.height;
+          ctx.drawImage(image, 0, 0);
+          
+          // عرض معلومات الصورة
+          imageInfo.style.display = 'block';
+          if (currentLanguage === 'ar') {
+            infoText.textContent = `تم تحميل الصورة: ${file.name} (${image.width} × ${image.height} بكسل)`;
+          } else {
+            infoText.textContent = `Image loaded: ${file.name} (${image.width} × ${image.height} pixels)`;
+          }
+          
+          // إعادة تعيين المعاينة
+          preview.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-icon">
+                <i class="fas fa-check-circle" style="color: #4CAF50;"></i>
+              </div>
+              <div class="empty-text lang-ar">تم تحميل الصورة بنجاح!</div>
+              <div class="empty-text lang-en">Image loaded successfully!</div>
+              <div class="empty-subtext lang-ar">اضغط على "قص الصورة" لبدء التقسيم</div>
+              <div class="empty-subtext lang-en">Click "Split Image" to start splitting</div>
+            </div>
+          `;
+          preview.classList.add('empty');
+        };
+        image.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // تقسيم الصورة
+    function splitImage() {
+      const rows = parseInt(document.getElementById("rows").value);
+      const cols = parseInt(document.getElementById("cols").value);
+      
+      if (!image) {
+        alert(currentLanguage === 'ar' ? "يرجى تحميل صورة أولاً" : "Please upload an image first");
+        return;
+      }
+      
+      // إظهار مؤشر التحميل
+      loading.style.display = "block";
+      successMessage.style.display = "none";
+      
+      // استخدام setTimeout للسماح بتحديث واجهة المستخدم
+      setTimeout(() => {
+        const tileWidth = canvas.width / cols;
+        const tileHeight = canvas.height / rows;
+        imagesArray = [];
+
+        preview.innerHTML = "";
+        preview.classList.remove("empty");
+
+        for (let y = 0; y < rows; y++) {
+          for (let x = 0; x < cols; x++) {
+            const tileCanvas = document.createElement("canvas");
+            tileCanvas.width = tileWidth;
+            tileCanvas.height = tileHeight;
+            const tileCtx = tileCanvas.getContext("2d");
+            tileCtx.drawImage(canvas, x * tileWidth, y * tileHeight, tileWidth, tileHeight, 0, 0, tileWidth, tileHeight);
+            const dataUrl = tileCanvas.toDataURL();
+            imagesArray.push(dataUrl);
+
+            const img = document.createElement("img");
+            img.src = dataUrl;
+            img.title = currentLanguage === 'ar' ? `قطعة ${y * cols + x + 1}` : `Tile ${y * cols + x + 1}`;
+            img.classList.add("fade-in");
+            preview.appendChild(img);
+          }
+        }
+        
+        // إخفاء مؤشر التحميل
+        loading.style.display = "none";
+        
+        // إظهار رسالة نجاح
+        successMessage.style.display = "block";
+        if (currentLanguage === 'ar') {
+          successText.textContent = `تم تقسيم الصورة إلى ${imagesArray.length} قطعة بنجاح!`;
+        } else {
+          successText.textContent = `Image successfully split into ${imagesArray.length} tiles!`;
+        }
+      }, 500);
+    }
+
+    // تحميل جميع القطع
+    function downloadAll() {
+      if (imagesArray.length === 0) {
+        alert(currentLanguage === 'ar' ? "لا توجد قطع للتحميل. يرجى قص الصورة أولاً." : "No tiles to download. Please split the image first.");
+        return;
+      }
+      
+      let downloaded = 0;
+      imagesArray.forEach((dataUrl, index) => {
+        const a = document.createElement("a");
+        a.href = dataUrl;
+        if (currentLanguage === 'ar') {
+          a.download = `قطعة_إنستغرام_${index + 1}.png`;
+        } else {
+          a.download = `instagram_tile_${index + 1}.png`;
+        }
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        
+        downloaded++;
+        
+        // عرض رسالة عند اكتمال التحميل
+        if (downloaded === imagesArray.length) {
+          setTimeout(() => {
+            successMessage.style.display = "block";
+            if (currentLanguage === 'ar') {
+              successText.textContent = `✓ تم تحميل ${downloaded} قطعة بنجاح`;
+            } else {
+              successText.textContent = `✓ Successfully downloaded ${downloaded} tiles`;
+            }
+          }, 500);
+        }
+      });
+    }
+  </script>
+</body>
+</html>
