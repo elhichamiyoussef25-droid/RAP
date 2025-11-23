@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>معرض الصور - قصاص إنستغرام</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Segoe UI', 'Tajawal', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            position: relative;
+            color: white;
+            padding: 20px;
+        }
+        
+        /* خلفية ثلاثية الأبعاد محسنة */
+        .background-3d {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        /* شبكة خلفية متحركة */
+        .grid-bg {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: 
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+            transform: rotate(15deg);
+        }
+        
+        @keyframes gridMove {
+            0% { transform: rotate(15deg) translate(0, 0); }
+            100% { transform: rotate(15deg) translate(-50px, -50px); }
+        }
+        
+        /* الأشكال الهندسية المحسنة */
+        .shape {
+            position: absolute;
+            opacity: 0.6;
+            animation: float 20s infinite ease-in-out;
+            filter: blur(1px);
+        }
+        
+        .shape1 {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
+            top: 10%;
+            left: 10%;
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            animation-duration: 25s;
+            box-shadow: 0 0 30px rgba(255, 107, 107, 0.4);
+        }
+        
+        .shape2 {
+            width: 180px;
+            height: 180px;
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            top: 70%;
+            left: 80%;
+            border-radius: 50%;
+            animation-duration: 30s;
+            box-shadow: 0 0 30px rgba(78, 205, 196, 0.4);
+        }
+        
+        .shape3 {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, #a166ab, #764ba2);
+            top: 20%;
+            left: 85%;
+            border-radius: 20% 80% 80% 20% / 20% 20% 80% 80%;
+            animation-duration: 22s;
+            box-shadow: 0 0 30px rgba(161, 102, 171, 0.4);
+        }
+        
+        .shape4 {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(45deg, #ffeaa7, #fdcb6e);
+            top: 80%;
+            left: 15%;
+            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+            animation-duration: 28s;
+            box-shadow: 0 0 30px rgba(253, 203, 110, 0.4);
+        }
+        
+        /* الحاوية الرئيسية المحسنة */
+        .container {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 
+                0 15px 35px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            text-align: center;
+            width: 95%;
+            max-width: 1200px;
+            max-height: 95vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* تأثير إضاءة للحاوية */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57, #ff9ff3, #54a0ff);
+            z-index: -1;
+            border-radius: 27px;
+            animation: borderGlow 8s linear infinite;
+            background-size: 400%;
+        }
+        
+        .container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: inherit;
+            border-radius: 25px;
+            z-index: -1;
+        }
+        
+        @keyframes borderGlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, #405DE6, #E1306C, #FCAF45);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(to right, #405DE6, #E1306C);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        /* حاوية الصورة المحسنة */
+        .image-container {
+            width: 100%;
+            height: 60vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 25px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        
+        .image-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+        
+        img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border-radius: 10px;
+            transition: transform 0.5s ease;
+            display: block;
+        }
+        
+        .image-container:hover img {
+            transform: scale(1.02);
+        }
+        
+        /* رسالة خطأ للصورة */
+        .image-error {
+            display: none;
+            color: #ff6b6b;
+            font-size: 16px;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .countdown {
+            background: linear-gradient(45deg, rgba(64, 93, 230, 0.8), rgba(225, 48, 108, 0.8));
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .countdown i {
+            font-size: 20px;
+        }
+        
+        /* دائرة التحميل المحسنة */
+        .loading-container {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            z-index: 10;
+        }
+        
+        .loading-text {
+            color: white;
+            font-size: 16px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+            font-weight: 500;
+        }
+        
+        .loading-circle {
+            width: 70px;
+            height: 70px;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            border-top: 4px solid #405DE6;
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite;
+            box-shadow: 0 0 20px rgba(64, 93, 230, 0.5);
+            position: relative;
+        }
+        
+        .loading-circle::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border: 4px solid transparent;
+            border-top: 4px solid #E1306C;
+            border-radius: 50%;
+            animation: spin 2s linear infinite reverse;
+        }
+        
+        /* شريط التقدم */
+        .progress-bar {
+            width: 300px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        
+        .progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(to right, #405DE6, #E1306C);
+            border-radius: 10px;
+            transition: width 1s linear;
+        }
+        
+        /* تأثيرات النص */
+        .welcome-text {
+            font-size: 28px;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #fff, #a5b1c2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 25px;
+            max-width: 400px;
+            line-height: 1.5;
+        }
+        
+        /* تأثيرات الاستجابة */
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+            }
+            
+            .welcome-text {
+                font-size: 22px;
+            }
+            
+            .countdown {
+                font-size: 16px;
+                padding: 12px 25px;
+            }
+            
+            .progress-bar {
+                width: 250px;
+            }
+            
+            .image-container {
+                height: 50vh;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .image-container {
+                height: 40vh;
+            }
+            
+            .logo-text {
+                font-size: 20px;
+            }
+        }
+        
+        /* الرسوم المتحركة */
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) rotate(0deg) scale(1);
+            }
+            33% {
+                transform: translate(30px, -20px) rotate(120deg) scale(1.1);
+            }
+            66% {
+                transform: translate(-20px, 20px) rotate(240deg) scale(0.9);
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg) scale(1);
+            }
+        }
+        
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- خلفية ثلاثية الأبعاد -->
+    <div class="background-3d">
+        <div class="grid-bg"></div>
+        <div class="shape shape1"></div>
+        <div class="shape shape2"></div>
+        <div class="shape shape3"></div>
+        <div class="shape shape4"></div>
+    </div>
+    
+    <!-- المحتوى الرئيسي -->
+    <div class="container">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-crop-alt"></i>
+            </div>
+            <div class="logo-text">قصاص إنستغرام</div>
+        </div>
+        
+        <h1 class="welcome-text">مرحباً بك في معرض الصور</h1>
+        <p class="subtitle">استمتع بمشاهدة صورتك قبل الانتقال إلى أداة القص المتقدمة</p>
+        
+        <div class="image-container">
+            <div class="image-wrapper">
+                <img src="imaj.jpeg" alt="الصورة" id="mainImage" onerror="showImageError()">
+            </div>
+            <div class="image-error" id="imageError">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>تعذر تحميل الصورة. يرجى التأكد من وجود ملف imaj.jpeg في المجلد الصحيح.</p>
+            </div>
+        </div>
+        
+        <div class="countdown">
+            <i class="fas fa-clock"></i>
+            <span>سيتم الانتقال خلال <span id="seconds">7</span> ثوانٍ</span>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+    </div>
+    
+    <!-- دائرة التحميل في الأسفل -->
+    <div class="loading-container">
+        <div class="loading-circle"></div>
+        <div class="loading-text">جاري التحميل، الرجاء الانتظار...</div>
+    </div>
+
+    <script>
+        // التحقق من تحميل الصورة
+        function checkImage() {
+            const img = document.getElementById('mainImage');
+            const errorDiv = document.getElementById('imageError');
+            
+            // التحقق إذا كانت الصورة قد تحملت بنجاح
+            if (img.complete && img.naturalHeight !== 0) {
+                console.log('الصورة محملة بنجاح');
+            } else {
+                img.onerror = function() {
+                    errorDiv.style.display = 'block';
+                    console.error('فشل في تحميل الصورة');
+                };
+            }
+        }
+        
+        // عرض رسالة الخطأ
+        function showImageError() {
+            document.getElementById('imageError').style.display = 'block';
+        }
+        
+        // عد تنازلي للثواني مع شريط التقدم
+        let seconds = 7;
+        const countdownElement = document.getElementById('seconds');
+        const progressElement = document.getElementById('progress');
+        
+        const countdownInterval = setInterval(() => {
+            seconds--;
+            countdownElement.textContent = seconds;
+            
+            // تحديث شريط التقدم
+            const progressPercent = 100 - (seconds / 7 * 100);
+            progressElement.style.width = progressPercent + '%';
+            
+            if (seconds <= 0) {
+                clearInterval(countdownInterval);
+                // تأثير انتقال قبل الانتقال
+                document.querySelector('.container').style.opacity = '0';
+                document.querySelector('.loading-container').style.opacity = '0';
+                setTimeout(() => {
+                    window.location.href = "grib-cutter.html";
+                }, 500);
+            }
+        }, 1000);
+        
+        // التحقق من الصورة عند تحميل الصفحة
+        window.onload = function() {
+            checkImage();
+            
+            // تأثير ظهور تدريجي
+            const container = document.querySelector('.container');
+            container.style.opacity = '0';
+            container.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                container.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                container.style.opacity = '1';
+                container.style.transform = 'translateY(0)';
+            }, 300);
+        };
+        
+        // إعادة تحميل الصورة في حال وجود مشكلة
+        function reloadImage() {
+            const img = document.getElementById('mainImage');
+            const errorDiv = document.getElementById('imageError');
+            
+            errorDiv.style.display = 'none';
+            img.src = 'imaj.jpeg?' + new Date().getTime(); // إضافة timestamp لتجنب الكاش
+        }
+    </script>
+</body>
+</html>
